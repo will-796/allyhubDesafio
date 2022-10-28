@@ -6,7 +6,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   mask?: string
 }
 
-const Input = ({ name, label, ...rest }: InputProps): JSX.Element => {
+const Input = ({ name, label, mask, ...rest }: InputProps): JSX.Element => {
+  const classMask = `mask-${mask ?? ''}`
   return (
     <div>
       <label htmlFor={name} className="form-label">
@@ -15,7 +16,7 @@ const Input = ({ name, label, ...rest }: InputProps): JSX.Element => {
 
       <input
         type="text"
-        className="form-control"
+        className={`form-control ${classMask}`}
         id={name}
         name={name}
         required
