@@ -16,9 +16,10 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = ({ options, selectType, ...rest }: SelectProps): JSX.Element => {
+  const selectMessage = selectType === 'cities' ? 'uma cidade' : 'um país'
   return (
-    <select {...rest} className="form-select" required>
-      <option>Selecione uma {selectType}</option>
+    <select {...rest} className="form-select col" required>
+      <option>Selecione {selectMessage}</option>
       {options
         .sort((a, b) =>
           a.name_ptbr < b.name_ptbr ? -1 : a.name_ptbr > b.name_ptbr ? 1 : 0

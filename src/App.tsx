@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css'
 import Input from './components/Input'
 import { maskCpf, maskPhone } from './masksInput/mask'
 import axios from 'axios'
 import Select from './components/Select'
 import ShowTravels from './components/ShowTravels'
+import './style.css'
 
 interface UserInfo {
   name: string
@@ -64,10 +64,9 @@ function App (): JSX.Element {
     travel: 'countries' | 'cities'
   ): void => {
     const { value } = event.target
-    if (info[travel].includes(value)) {
-      return
+    if (!info[travel].includes(value)) {
+      setInfo({ ...info, [travel]: [...info[travel], value] })
     }
-    setInfo({ ...info, [travel]: [...info[travel], value] })
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -81,53 +80,61 @@ function App (): JSX.Element {
     console.log(info)
   }
 
-  const removeTravel = (travelType: string, travel: string): void => {
-    const filteredCities = cities.filter((city) => city !== travel)
+  const removeTravel = (
+    travelType: 'cities' | 'countries',
+    travel: string
+  ): void => {
+    const filteredCities = info[travelType].filter((city) => city !== travel)
     setInfo({ ...info, [travelType]: filteredCities })
   }
 
   return (
-    <div className="App">
+    <div className="app">
       <form
         action="submit"
         onSubmit={handleSubmit}
-        className={`row g-3 needs-validation ${
+        className={`needs-validation shadow row justify-content-center gy-3 bg-light ${
           validated ? 'was-validated' : ''
         }`}
         noValidate
-      >
-        <Input label="nome" name="name" onChange={handleChange} />
+        >
+        <h1>Cadastro de viagens</h1>
+        <Input label="Nome" name="name" onChange={handleChange} />
         <Input
-          label="email"
+          label="Email"
           name="email"
           type={'email'}
           onChange={handleChange}
         />
         <Input
-          label="telefone"
+          label="Telefone"
           name="phone"
           onChange={handleChange}
           mask={'phone'}
         />
-        <Input label="CPF" name="cpf" onChange={handleChange} mask={'cpf'} />
-        <Select
-          options={apiResponse.city}
-          onChange={(event) => handlesTravelChange(event, 'cities')}
-          value={''}
-          selectType={'cities'}
-        />
-        <Select
-          options={apiResponse.country}
-          onChange={(event) => handlesTravelChange(event, 'countries')}
-          value={''}
-          selectType={'countries'}
-        />
+        <Input label="Cpf" name="cpf" onChange={handleChange} mask={'cpf'} />
+        <div className="row gy-3 selectsContainer">
+          <Select
+            options={apiResponse.city}
+            onChange={(event) => handlesTravelChange(event, 'cities')}
+            value={''}
+            selectType={'cities'}
+          />
+          <Select
+            options={apiResponse.country}
+            onChange={(event) => handlesTravelChange(event, 'countries')}
+            value={''}
+            selectType={'countries'}
+          />
+        </div>
         <ShowTravels
           travels={{ cities, countries }}
           removeTravel={removeTravel}
         />
 
-        <button type="submit">Enviar</button>
+        <button className="btn btn-primary" type="submit">
+          Enviar
+        </button>
       </form>
     </div>
   )

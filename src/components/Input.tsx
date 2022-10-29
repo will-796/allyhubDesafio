@@ -9,7 +9,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input = ({ name, label, mask, ...rest }: InputProps): JSX.Element => {
   const classMask = `mask-${mask ?? ''}`
   return (
-    <div>
+    <div >
       <label htmlFor={name} className="form-label">
         {`${label}:`}
       </label>
